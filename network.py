@@ -11,15 +11,23 @@ class Network:
     self.hnodes = hnodes
     self.onodes = onodes
     self.lgrade = lgrade
-    self.afunction = lambda x: scipy.special.expit(x) 
+    self.afunc = lambda x: scipy.special.expit(x) 
     
-    self.w_input_hidden = numpy.random.normal(
+    self.wih = numpy.random.normal(
       0.0, pow(self.hnodes, -0.5), (self.hnodes, self.inodes))
     self.w_hidden_output = numpy.random.normal(
       0.0, pow(onodes, -0.5), (self.onodes, self.hnodes))
   
-  def query(self, input):
-    pass
+  def query(self, input_list):
+    inputs = numpy.array(input_list, ndmin=2).T
+
+    hidden_inputs = numpy.dot(self.wih, inputs)
+    hidden_outputs = self.afunc(hidden_inputs)
+
+    output_inputs = numpy.dot(self.who, hidden_outputs)
+    output_outputs = self.afunc(output_inputs)
+
+    return output_outputs
 
   def train(self):
     pass
